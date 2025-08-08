@@ -1,0 +1,14 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "RequireMFAConsoleAccess",
+      "Effect": "Deny",
+      "Action": "aws-portal:*",
+      "Resource": "*",
+      "Condition": {
+        "BoolIfExists": { "aws:MultiFactorAuthPresent": "false" }
+      }
+    }
+  ]
+}

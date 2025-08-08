@@ -1,0 +1,18 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyTamperSecurityServices",
+      "Effect": "Deny",
+      "Action": [
+        "cloudtrail:DeleteTrail",
+        "cloudtrail:StopLogging",
+        "config:DeleteConfigurationRecorder",
+        "guardduty:DeleteDetector",
+        "securityhub:DisableSecurityHub",
+        "access-analyzer:DeleteAnalyzer"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

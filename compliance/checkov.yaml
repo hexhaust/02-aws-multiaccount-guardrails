@@ -1,0 +1,2 @@
+skip-check:
+  - CKV2_AWS_6  # example: skip org-specific check

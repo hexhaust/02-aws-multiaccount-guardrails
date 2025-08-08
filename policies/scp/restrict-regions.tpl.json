@@ -1,0 +1,22 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyUnsupportedRegions",
+      "Effect": "Deny",
+      "Action": "*",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": ${jsonencode(concat(var.base_allowed_regions, var.extra_allowed_regions))}
+        },
+        "ArnNotLike": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/aws-service-role/*",
+            "arn:aws:iam::*:role/AWSServiceRoleFor*"
+          ]
+        }
+      }
+    }
+  ]
+}
