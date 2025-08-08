@@ -33,6 +33,15 @@ Per-account overrides are supported via Terragrunt input `extra_allowed_regions`
 - **Access Analyzer** at org-level
 - **Identity Center** permission sets (starter set)
 
+## Optional: Pre-commit hooks
+
+You can optionally install `pre-commit` hooks to auto-run Terraform lint, security checks, and OPA tests before each commit:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
 ## Getting Started
 
 ```bash
