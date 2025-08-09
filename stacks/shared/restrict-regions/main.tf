@@ -45,7 +45,7 @@ data "template_file" "policy" {
 }
 
 module "scp" {
-  source             = "../../modules/scp"
+  source             = "../../../modules/scp"
   name               = "restrict-regions"
   description        = "Deny actions outside approved regions (with per-account override)."
   policy_json        = data.template_file.policy.rendered
