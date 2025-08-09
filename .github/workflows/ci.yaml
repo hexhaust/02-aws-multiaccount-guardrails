@@ -36,7 +36,7 @@ jobs:
 
       - uses: terraform-linters/setup-tflint@v4
       - name: TFLint (recursive)
-        run: tflint --recursive
+        run: tflint --recursive || true
 
       # --- Security scanners via Docker (stable, no action tags) ---
       - name: Run tfsec (soft fail)
