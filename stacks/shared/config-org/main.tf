@@ -12,24 +12,28 @@ provider "aws" {
   region = var.default_region
 }
 
+variable "default_region" {
+  type    = string
+  default = "us-east-1"
+}
+
+# InfoSec (delegated admin) account ID — used by you operationally, not strictly needed here.
 variable "security_account_id" {
   type    = string
   default = "000000000000"
 }
-variable "log_archive_bucket_name" {
-  type    = string
-  default = "org-cloudtrail-logs"
+
+# Organization-wide AWS Config Aggregator
+resource "aws_config_configuration_aggregator" "org" {
+  name = "org-aggregator"
+
+  organization_aggregation_source {
+    all_regions = true
+    # If you want to scope to specific regions:
+    # regions = ["us-east-1", "us-west-2"]
+  }
 }
 
-module "config" {
-  source  = "trussworks/config/aws"
-  version = "~> 8.0"
-
-  organization_aggregator = true
-  aggregator_account_id   = var.security_account_id
-}
-
-variable "default_region" {
-  type    = string
-  default = "us-east-1"
+output "config_aggregator_arn" {
+  value = aws_config_configuration_aggregator.org.arn
 }
