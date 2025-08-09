@@ -40,4 +40,7 @@ resource "aws_organizations_policy_attachment" "accounts" {
 }
 
 data "aws_organizations_organization" "org" {}
-variable "default_region" { type = string, default = "us-east-1" }
+variable "default_region" {
+  type    = string
+  default = "us-east-1"
+}

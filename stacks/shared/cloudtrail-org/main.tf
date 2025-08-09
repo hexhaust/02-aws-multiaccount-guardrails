@@ -28,4 +28,7 @@ module "cloudtrail" {
   s3_bucket_name = var.log_archive_bucket_name
 }
 
-variable "default_region" { type = string, default = "us-east-1" }
+variable "default_region" {
+  type    = string
+  default = "us-east-1"
+}

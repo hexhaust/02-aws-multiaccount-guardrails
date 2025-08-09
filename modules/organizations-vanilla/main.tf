@@ -13,11 +13,11 @@ provider "aws" {
 }
 
 
-data "aws_organizations_organization" "org" { }
+data "aws_organizations_organization" "org" {}
 
 resource "aws_organizations_organizational_unit" "ou" {
-  for_each = var.ou_structure
-  name     = each.value.name
+  for_each  = var.ou_structure
+  name      = each.value.name
   parent_id = data.aws_organizations_organization.org.roots[0].id
 }
 
@@ -28,4 +28,7 @@ output "ou_ids" {
   }
 }
 
-variable "default_region" { type = string, default = "us-east-1" }
+variable "default_region" {
+  type    = string
+  default = "us-east-1"
+}

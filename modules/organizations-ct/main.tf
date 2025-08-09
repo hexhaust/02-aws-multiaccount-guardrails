@@ -13,7 +13,7 @@ provider "aws" {
 }
 
 
-data "aws_organizations_organization" "org" { }
+data "aws_organizations_organization" "org" {}
 
 # Look up existing CT-created OUs by name; create if missing (idempotent via importable resource is hard),
 # so here we only *read* and expect OUs to exist. In vanilla stack we create OUs.
@@ -35,4 +35,7 @@ output "ou_ids" {
   }
 }
 
-variable "default_region" { type = string, default = "us-east-1" }
+variable "default_region" {
+  type    = string
+  default = "us-east-1"
+}

@@ -45,4 +45,7 @@ module "scp" {
   target_account_ids  = var.target_account_ids
 }
 
-variable "default_region" { type = string, default = "us-east-1" }
+variable "default_region" {
+  type    = string
+  default = "us-east-1"
+}

@@ -36,4 +36,7 @@ module "restrict_regions" {
   attach_to_root = true
 }
 
-variable "default_region" { type = string, default = "us-east-1" }
+variable "default_region" {
+  type    = string
+  default = "us-east-1"
+}

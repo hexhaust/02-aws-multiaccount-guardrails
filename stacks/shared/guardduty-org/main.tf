@@ -24,4 +24,7 @@ module "guardduty_admin" {
   enable_organization = true
 }
 
-variable "default_region" { type = string, default = "us-east-1" }
+variable "default_region" {
+  type    = string
+  default = "us-east-1"
+}
