@@ -22,11 +22,18 @@ variable "security_account_id" {
   default = "000000000000"
 }
 
+variable "config_aggregator_role_arn" {
+  description = "IAM Role ARN that AWS Config uses for the organization aggregator (e.g., arn:aws:iam::<InfoSecAccountId>:role/OrgConfigAggregatorRole)"
+  type        = string
+  default     = "arn:aws:iam::000000000000:role/OrgConfigAggregatorRole"
+}
+
 resource "aws_config_configuration_aggregator" "org" {
   name = "org-aggregator"
 
   organization_aggregation_source {
     all_regions = true
+    role_arn    = var.config_aggregator_role_arn
   }
 }
 
