@@ -8,7 +8,7 @@
       "Resource": "*",
       "Condition": {
         "StringNotEquals": {
-          "aws:RequestedRegion": ${jsonencode(concat(var.base_allowed_regions, var.extra_allowed_regions))}
+          "aws:RequestedRegion": "${jsonencode(concat(var.base_allowed_regions, var.extra_allowed_regions))}"
         },
         "ArnNotLike": {
           "aws:PrincipalArn": [
