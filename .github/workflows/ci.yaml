@@ -11,18 +11,55 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
+
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.8.5
+
       - name: Install Terragrunt
         run: |
           TG_VERSION=0.66.9
           curl -L "https://github.com/gruntwork-io/terragrunt/releases/download/v${TG_VERSION}/terragrunt_linux_amd64" -o terragrunt
-          sudo install terragrunt /usr/local/bin/terragrunt
-      - name: Install pre-commit
-        run: pip install pre-commit
-      - name: Run pre-commit
-        run: pre-commit run --all-files
+          sudo install ./terragrunt /usr/local/bin/terragrunt
+
+      # --- Terraform basic checks ---
+      - name: Terraform fmt (check)
+        run: terraform fmt -check -recursive
+
+      - name: Terraform validate (root stacks/modules)
+        run: |
+          set -euo pipefail
+          # valida módulos e stacks (não precisa credencial AWS)
+          for d in modules stacks; do
+            find "$d" -name '*.tf' -printf '%h\n' | sort -u | while read -r path; do
+              ( cd "$path" && terraform init -backend=false -input=false -no-color && terraform validate -no-color )
+            done
+          done
+
+      # --- TFLint ---
+      - uses: terraform-linters/setup-tflint@v4
+      - name: TFLint (recursive)
+        run: tflint --recursive
+
+      # --- tfsec (IaC security) ---
+      - uses: aquasecurity/tfsec-action@v1
+        with:
+          working_directory: .
+          soft_fail: true   # deixe true por enquanto para não travar PR cedo demais
+
+      # --- Checkov (extra IaC checks) ---
+      - uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: .
+          soft_fail: true   # idem acima
+
+      # --- Conftest/OPA (opcional) ---
+      - name: Install conftest
+        run: |
+          curl -L https://github.com/open-policy-agent/conftest/releases/download/v0.54.0/conftest_Linux_x86_64.tar.gz | tar xz
+          sudo install conftest /usr/local/bin/conftest
+      - name: Conftest (if policies exist)
+        run: |
+          if [ -d compliance/conftest ]; then
+            conftest test -p compliance/conftest -n 0 || true
+          fi
