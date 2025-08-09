@@ -47,8 +47,7 @@ locals {
   policy_json = templatefile(
     "${path.module}/../../../policies/scp/restrict-regions.tpl.json",
     {
-      base_allowed_regions  = jsonencode(var.base_allowed_regions)
-      extra_allowed_regions = jsonencode(var.extra_allowed_regions)
+  allowed_regions = jsonencode(concat(var.base_allowed_regions, var.extra_allowed_regions))
     }
   )
 }
