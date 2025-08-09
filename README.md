@@ -6,6 +6,8 @@
 
 Production-ready **guardrails** for an AWS multi-account organization using **Terraform + Terragrunt**.
 
+This project provides a **ready-to-deploy security and governance baseline** for AWS Organizations, ensuring every account — from sandbox to production — is automatically enrolled in centralized logging, security services, and region controls. By standardizing guardrails across the org, you reduce misconfiguration risk, enforce compliance from day one, and make it easier for teams to move fast without sacrificing security or control.
+
 ---
 
 ## 🚀 Landing Zone Flavors
