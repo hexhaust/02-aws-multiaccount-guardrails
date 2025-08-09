@@ -1,4 +1,4 @@
-🛡️ Production-ready guardrails for an AWS multi-account organization using **Terraform + Terragrunt**.
+# 🛡️ Production-ready guardrails for an AWS multi-account organization using **Terraform + Terragrunt**.
 
 ## Landing Zone Flavors
 
@@ -8,7 +8,7 @@ This repo supports **both**:
 
 Choose per environment by pointing Terragrunt `source` to the desired stack.
 
-## OU Layout
+## 🏢 OU Layout
 
 - **InfoSec** (delegated admin for GuardDuty, Security Hub, Config aggregator, Access Analyzer)
 - **Sandbox**
@@ -18,13 +18,13 @@ Choose per environment by pointing Terragrunt `source` to the desired stack.
 - **Pre-Production**
 - **Production**
 
-## Region Restriction (SCP)
+## 🚧 Region Restriction (SCP)
 
 Default allowed regions: `us-east-1`, `us-west-2`, `ap-northeast-1`, `ap-southeast-1`, `eu-central-1`.
 
 Per-account overrides are supported via Terragrunt input `extra_allowed_regions` in each account's `terragrunt.hcl`. Submit a PR adding regions for that account and CI will generate the merged SCP.
 
-## Security Services (Org-wide)
+## 🔐 Security Services (Org-wide)
 
 - **CloudTrail (Org Trail)** with KMS + S3 in Log Archive
 - **AWS Config** aggregator in InfoSec
@@ -33,7 +33,7 @@ Per-account overrides are supported via Terragrunt input `extra_allowed_regions`
 - **Access Analyzer** at org-level
 - **Identity Center** permission sets (starter set)
 
-## Optional: Pre-commit hooks
+## ✔️ Optional: Pre-commit hooks
 
 You can optionally install `pre-commit` hooks to auto-run Terraform lint, security checks, and OPA tests before each commit:
 
