@@ -1,6 +1,6 @@
 # 🛡️ AWS Multi-Account Guardrails — Terraform + Terragrunt
 
-[![CI](https://github.com/<YOUR_GITHUB_USER>/02-aws-multiaccount-guardrails/actions/workflows/ci.yaml/badge.svg)](https://github.com/<YOUR_GITHUB_USER>/02-aws-multiaccount-guardrails/actions/workflows/ci.yaml)
+[![CI](https://github.com/hexhaust/02-aws-multiaccount-guardrails/actions/workflows/ci.yaml/badge.svg)](https://github.com/hexhaust/02-aws-multiaccount-guardrails/actions/workflows/ci.yaml)
 ![Terraform](https://img.shields.io/badge/Terraform-%5E1.5-blue?logo=terraform)
 ![Terragrunt](https://img.shields.io/badge/Terragrunt-%5E0.66-blue)
 
