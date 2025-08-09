@@ -15,7 +15,7 @@ provider "aws" {
 
 variable "base_allowed_regions" {
   type    = list(string)
-  default = ["us-east-1","us-west-2","ap-northeast-1","ap-southeast-1","eu-central-1"]
+  default = ["us-east-1", "us-west-2", "ap-northeast-1", "ap-southeast-1", "eu-central-1"]
 }
 
 variable "extra_allowed_regions" {
@@ -23,9 +23,18 @@ variable "extra_allowed_regions" {
   default = []
 }
 
-variable "target_ou_ids" { type = list(string), default = [] }
-variable "target_account_ids" { type = list(string), default = [] }
-variable "attach_to_root" { type = bool, default = true }
+variable "target_ou_ids" {
+  type    = list(string)
+  default = []
+}
+variable "target_account_ids" {
+  type    = list(string)
+  default = []
+}
+variable "attach_to_root" {
+  type    = bool
+  default = true
+}
 
 data "template_file" "policy" {
   template = file("${path.module}/../../policies/scp/restrict-regions.tpl.json")
@@ -36,13 +45,13 @@ data "template_file" "policy" {
 }
 
 module "scp" {
-  source              = "../../modules/scp"
-  name                = "restrict-regions"
-  description         = "Deny actions outside approved regions (with per-account override)."
-  policy_json         = data.template_file.policy.rendered
-  attach_to_root      = var.attach_to_root
-  target_ou_ids       = var.target_ou_ids
-  target_account_ids  = var.target_account_ids
+  source             = "../../modules/scp"
+  name               = "restrict-regions"
+  description        = "Deny actions outside approved regions (with per-account override)."
+  policy_json        = data.template_file.policy.rendered
+  attach_to_root     = var.attach_to_root
+  target_ou_ids      = var.target_ou_ids
+  target_account_ids = var.target_account_ids
 }
 
 variable "default_region" {

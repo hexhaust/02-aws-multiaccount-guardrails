@@ -12,8 +12,14 @@ provider "aws" {
   region = var.default_region
 }
 
-variable "security_account_id" { type = string, default = "000000000000" }
-variable "log_archive_bucket_name" { type = string, default = "org-cloudtrail-logs" }
+variable "security_account_id" {
+  type    = string
+  default = "000000000000"
+}
+variable "log_archive_bucket_name" {
+  type    = string
+  default = "org-cloudtrail-logs"
+}
 
 module "cloudtrail" {
   source  = "terraform-aws-modules/cloudtrail/aws"

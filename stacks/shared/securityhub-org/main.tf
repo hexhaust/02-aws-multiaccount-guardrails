@@ -12,15 +12,21 @@ provider "aws" {
   region = var.default_region
 }
 
-variable "security_account_id" { type = string, default = "000000000000" }
-variable "log_archive_bucket_name" { type = string, default = "org-cloudtrail-logs" }
+variable "security_account_id" {
+  type    = string
+  default = "000000000000"
+}
+variable "log_archive_bucket_name" {
+  type    = string
+  default = "org-cloudtrail-logs"
+}
 
 module "securityhub" {
   source  = "terraform-aws-modules/securityhub/aws"
   version = "~> 1.13"
 
   enable_organization_admin_account = true
-  admin_account_id = var.security_account_id
+  admin_account_id                  = var.security_account_id
 
   standards = {
     "AWS Foundational Security Best Practices v1.0.0" = { enabled = true }

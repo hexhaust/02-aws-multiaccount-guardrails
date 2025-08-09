@@ -14,23 +14,26 @@ provider "aws" {
 
 variable "account_name" { type = string }
 variable "ou_name" { type = string }
-variable "extra_allowed_regions" { type = list(string), default = [] }
+variable "extra_allowed_regions" {
+  type    = list(string)
+  default = []
+}
 
 module "org" {
   source = "../../modules/organizations-control-tower"
   ou_structure = {
-    InfoSec         = { name = "InfoSec" }
-    Sandbox         = { name = "Sandbox" }
-    Shared          = { name = "Shared" }
-    Development     = { name = "Development" }
-    Staging         = { name = "Staging" }
-    Pre-Production  = { name = "Pre-Production" }
-    Production      = { name = "Production" }
+    InfoSec        = { name = "InfoSec" }
+    Sandbox        = { name = "Sandbox" }
+    Shared         = { name = "Shared" }
+    Development    = { name = "Development" }
+    Staging        = { name = "Staging" }
+    Pre-Production = { name = "Pre-Production" }
+    Production     = { name = "Production" }
   }
 }
 
 module "restrict_regions" {
-  source = "../../stacks/shared/restrict-regions"
+  source                = "../../stacks/shared/restrict-regions"
   extra_allowed_regions = var.extra_allowed_regions
   # Attach to root by default; you can scope to OU or account if desired.
   attach_to_root = true

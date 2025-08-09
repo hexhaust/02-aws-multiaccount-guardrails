@@ -12,16 +12,22 @@ provider "aws" {
   region = var.default_region
 }
 
-variable "security_account_id" { type = string, default = "000000000000" }
-variable "log_archive_bucket_name" { type = string, default = "org-cloudtrail-logs" }
+variable "security_account_id" {
+  type    = string
+  default = "000000000000"
+}
+variable "log_archive_bucket_name" {
+  type    = string
+  default = "org-cloudtrail-logs"
+}
 
 module "guardduty_admin" {
   source  = "terraform-aws-modules/guardduty/aws"
   version = "~> 5.0"
 
   enable_organization_admin_account = true
-  admin_account_id = var.security_account_id
-  enable_organization = true
+  admin_account_id                  = var.security_account_id
+  enable_organization               = true
 }
 
 variable "default_region" {
