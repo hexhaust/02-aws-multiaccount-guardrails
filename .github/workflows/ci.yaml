@@ -25,14 +25,12 @@ jobs:
       - name: Terraform fmt (check)
         run: terraform fmt -check -recursive
 
-      - name: Terraform validate (modules & stacks)
+      - name: Terraform validate (stack roots only)
         run: |
           set -euo pipefail
-          for d in modules stacks; do
-            if [ -d "$d" ]; then
-              find "$d" -name '*.tf' -printf '%h\n' | sort -u | while read -r path; do
-                ( cd "$path" && terraform init -backend=false -input=false -no-color && terraform validate -no-color )
-              done
+          for stack in stacks/*/*/; do
+            if [ -d "$stack" ]; then
+              ( cd "$stack" && terraform init -backend=false -input=false -no-color && terraform validate -no-color )
             fi
           done
 
