@@ -12,25 +12,23 @@ provider "aws" {
   region = var.default_region
 }
 
+variable "default_region" {
+  type    = string
+  default = "us-east-1"
+}
+
+# Delegated admin account for GuardDuty (InfoSec)
 variable "security_account_id" {
   type    = string
   default = "000000000000"
 }
-variable "log_archive_bucket_name" {
-  type    = string
-  default = "org-cloudtrail-logs"
+
+# NOTE: This resource must be applied from the Organization management account.
+# For CI 'validate' it’s fine; real apply will need proper creds/context.
+resource "aws_guardduty_organization_admin_account" "this" {
+  admin_account_id = var.security_account_id
 }
 
-module "guardduty_admin" {
-  source  = "terraform-aws-modules/guardduty/aws"
-  version = "~> 5.0"
-
-  enable_organization_admin_account = true
-  admin_account_id                  = var.security_account_id
-  enable_organization               = true
-}
-
-variable "default_region" {
-  type    = string
-  default = "us-east-1"
+output "guardduty_admin_account" {
+  value = aws_guardduty_organization_admin_account.this.admin_account_id
 }
