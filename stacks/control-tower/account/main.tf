@@ -20,7 +20,7 @@ variable "extra_allowed_regions" {
 }
 
 module "org" {
-  source = "../../modules/organizations-control-tower"
+  source = "../../modules/organizations-ct"
   ou_structure = {
     InfoSec        = { name = "InfoSec" }
     Sandbox        = { name = "Sandbox" }
@@ -33,7 +33,7 @@ module "org" {
 }
 
 module "restrict_regions" {
-  source                = "../../stacks/shared/restrict-regions"
+  source                = "../../shared/restrict-regions"
   extra_allowed_regions = var.extra_allowed_regions
   # Attach to root by default; you can scope to OU or account if desired.
   attach_to_root = true
