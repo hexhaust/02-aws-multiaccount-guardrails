@@ -12,10 +12,12 @@ provider "aws" {
   region = var.default_region
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "security_account_id" {
   type    = string
   default = "000000000000"
 }
+# tflint-ignore: terraform_unused_declarations
 variable "log_archive_bucket_name" {
   type    = string
   default = "org-cloudtrail-logs"

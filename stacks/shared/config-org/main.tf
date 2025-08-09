@@ -17,6 +17,7 @@ variable "default_region" {
   default = "us-east-1"
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "security_account_id" {
   type    = string
   default = "000000000000"

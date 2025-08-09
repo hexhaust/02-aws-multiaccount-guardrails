@@ -12,7 +12,9 @@ provider "aws" {
   region = var.default_region
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "account_name" { type = string }
+# tflint-ignore: terraform_unused_declarations
 variable "ou_name" { type = string }
 variable "extra_allowed_regions" {
   type    = list(string)
