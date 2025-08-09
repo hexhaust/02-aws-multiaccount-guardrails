@@ -19,7 +19,7 @@ jobs:
       - name: Install Terragrunt
         run: |
           TG_VERSION=0.66.9
-          curl -L "https://github.com/gruntwork-io/terragrunt/releases/download/v${TG_VERSION}/terragrunt_linux_amd64" -o terragrunt
+          curl -sSL "https://github.com/gruntwork-io/terragrunt/releases/download/v${TG_VERSION}/terragrunt_linux_amd64" -o terragrunt
           sudo install ./terragrunt /usr/local/bin/terragrunt
 
       - name: Terraform fmt (check)
@@ -29,34 +29,28 @@ jobs:
         run: |
           set -euo pipefail
           for d in modules stacks; do
-            find "$d" -name '*.tf' -printf '%h\n' | sort -u | while read -r path; do
-              ( cd "$path" && terraform init -backend=false -input=false -no-color && terraform validate -no-color )
-            done
+            if [ -d "$d" ]; then
+              find "$d" -name '*.tf' -printf '%h\n' | sort -u | while read -r path; do
+                ( cd "$path" && terraform init -backend=false -input=false -no-color && terraform validate -no-color )
+              done
+            fi
           done
 
       - uses: terraform-linters/setup-tflint@v4
       - name: TFLint (recursive)
         run: tflint --recursive
 
-      # ✅ pin to a real tag
-      - name: tfsec
-        uses: aquasecurity/tfsec-action@v1.0.3
-        with:
-          working_directory: .
-          soft_fail: true
+      # --- Security scanners via Docker (stable, no action tags) ---
+      - name: Run tfsec (soft fail)
+        run: |
+          docker run --rm -v "${PWD}:/src" aquasec/tfsec /src || true
 
-      # Checkov (major tag exists)
-      - name: Checkov
-        uses: bridgecrewio/checkov-action@v12
-        with:
-          directory: .
-          soft_fail: true
+      - name: Run Checkov (soft fail)
+        run: |
+          docker run --rm -v "${PWD}:/src" bridgecrew/checkov --directory /src --quiet || true
 
-      # Conftest (use marketplace action or keep curl if you prefer)
-      - name: Setup Conftest
-        uses: princespaghetti/setup-opa-conftest@v1.1.24
-      - name: Conftest (if policies exist)
+      - name: Run Conftest (soft fail if policies exist)
         run: |
           if [ -d compliance/conftest ]; then
-            conftest test -p compliance/conftest -n 0 || true
+            docker run --rm -v "${PWD}:/project" openpolicyagent/conftest test -p /project/compliance/conftest -n 0 /project || true
           fi
