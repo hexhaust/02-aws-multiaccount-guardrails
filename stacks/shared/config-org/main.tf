@@ -17,20 +17,16 @@ variable "default_region" {
   default = "us-east-1"
 }
 
-# InfoSec (delegated admin) account ID — used by you operationally, not strictly needed here.
 variable "security_account_id" {
   type    = string
   default = "000000000000"
 }
 
-# Organization-wide AWS Config Aggregator
 resource "aws_config_configuration_aggregator" "org" {
   name = "org-aggregator"
 
   organization_aggregation_source {
     all_regions = true
-    # If you want to scope to specific regions:
-    # regions = ["us-east-1", "us-west-2"]
   }
 }
 
