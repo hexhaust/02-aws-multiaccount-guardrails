@@ -36,12 +36,8 @@ variable "attach_to_root" {
   default = true
 }
 
-locals {
-  policy_json = templatefile("${path.module}/../../../policies/scp/restrict-regions.tpl.json", {
-    base_allowed_regions  = jsonencode(var.base_allowed_regions)
-    extra_allowed_regions = jsonencode(var.extra_allowed_regions)
-  })
-}
+data "template_file" "policy" {
+  template = file("${path.module}/../../policies/scp/restrict-regions.tpl.json")
   vars = {
     base_allowed_regions  = jsonencode(var.base_allowed_regions)
     extra_allowed_regions = jsonencode(var.extra_allowed_regions)
