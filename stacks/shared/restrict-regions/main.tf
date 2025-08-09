@@ -12,6 +12,10 @@ provider "aws" {
   region = var.default_region
 }
 
+variable "default_region" {
+  type    = string
+  default = "us-east-1"
+}
 
 variable "base_allowed_regions" {
   type    = list(string)
@@ -27,34 +31,34 @@ variable "target_ou_ids" {
   type    = list(string)
   default = []
 }
+
 variable "target_account_ids" {
   type    = list(string)
   default = []
 }
+
 variable "attach_to_root" {
   type    = bool
   default = true
 }
 
-data "template_file" "policy" {
-  template = file("${path.module}/../../policies/scp/restrict-regions.tpl.json")
-  vars = {
-    base_allowed_regions  = jsonencode(var.base_allowed_regions)
-    extra_allowed_regions = jsonencode(var.extra_allowed_regions)
-  }
+locals {
+  # from stacks/shared/restrict-regions -> repo root is ../../../
+  policy_json = templatefile(
+    "${path.module}/../../../policies/scp/restrict-regions.tpl.json",
+    {
+      base_allowed_regions  = jsonencode(var.base_allowed_regions)
+      extra_allowed_regions = jsonencode(var.extra_allowed_regions)
+    }
+  )
 }
 
 module "scp" {
   source             = "../../../modules/scp"
   name               = "restrict-regions"
   description        = "Deny actions outside approved regions (with per-account override)."
-  policy_json        = data.template_file.policy.rendered
+  policy_json        = local.policy_json
   attach_to_root     = var.attach_to_root
   target_ou_ids      = var.target_ou_ids
   target_account_ids = var.target_account_ids
-}
-
-variable "default_region" {
-  type    = string
-  default = "us-east-1"
 }
